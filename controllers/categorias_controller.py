@@ -21,19 +21,12 @@ class CategoriasController:
                 'error': str(e)
             },500
         
-    def listarCategorias(self,id):
+    def listarCategorias(self):
         try:
-            print(id)
-            # categorias = self.model.query.all()
-            categorias = self.model.query.filter_by(estado=True).all()
-            # response = []
-            # for categoria in categorias:
-            #     response.append(categoria.convertirJson())
-
-            response = [
-                categoria.convertirJson()
-                for categoria in categorias
-            ]
+            categorias = CategoriasModel.query.all()            
+            response = []
+            for categoria in categorias:
+                response.append(categoria.convertirJson())                      
             return {
                 'data': response
             }, 200
@@ -43,4 +36,31 @@ class CategoriasController:
                 'error': str(e)
             }, 500
         
-            
+    def eliminarCategoria(self,categoria_id):
+        try:
+            categoria = CategoriasModel.query.filter_by(id=categoria_id).first()
+            categoria.estado=False
+            conexion.session.commit()
+            return {
+                'message': 'Categoria eliminada correctamente'
+            }, 200
+        except Exception as e:
+            conexion.session.rollback()
+            return {
+                'message': 'Internal server error',
+                'error': str(e)
+            }, 500
+    def actualizarCategoria(self,categoria_id,data):
+        try:
+            categoria = CategoriasModel.query.filter_by(id=categoria_id).first()
+            categoria.nombre = data['nombre']
+            conexion.session.commit()
+            return {
+                'data': categoria.convertirJson()
+            }, 201
+        except Exception as e:
+            conexion.session.rollback()
+            return {
+                'message': 'Internal server error',
+                'error': str(e)
+            }, 500

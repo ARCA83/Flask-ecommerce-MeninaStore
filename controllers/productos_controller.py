@@ -1,5 +1,5 @@
-from flask import request,jsonify
 from models.productos_model import ProductosModel
+from models.categorias_productos_model import CategoriasProductosModel
 from configuracion import conexion
 
 
@@ -12,6 +12,14 @@ class ProductosController:
             producto = self.model(data['nombre'], data['precio'], data['imagen'])
             conexion.session.add(producto)
             conexion.session.commit()
+
+            nuevas_categorias = []
+            for categoria in data['categorias']:
+                nueva_categoria = CategoriasProductosModel(producto.id, categoria['categoria_id'])
+                nuevas_categorias.append(nueva_categoria)
+            conexion.session.add_all(nuevas_categorias)
+            conexion.session.commit()
+            
             return {
                 'data': producto.convertirJson()
             }, 201

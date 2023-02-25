@@ -9,5 +9,15 @@ def categoriasCrear():
 
 @app.route("/categorias/listar", methods=['GET'])
 def categoriasListar():
-    controller = CategoriasController
+    controller = CategoriasController()
     return controller.listarCategorias()
+
+@app.route("/categorias/eliminar/<int:categoria_id>", methods=['DELETE'])
+def categoriaEliminar(categoria_id):
+    controller = CategoriasController()
+    return controller.eliminarCategoria(categoria_id)
+
+@app.route("/categorias/actualizar/<int:categoria_id>", methods=['PUT'])
+def categoriaActualizar(categoria_id):
+    controller = CategoriasController()
+    return controller.actualizarCategoria(categoria_id,request.json)
