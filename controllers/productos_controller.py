@@ -1,12 +1,15 @@
+from flask import request,jsonify
 from models.productos_model import ProductosModel
 from configuracion import conexion
 
 
 class ProductosController:
+    def __init__(self) -> None:
+        self.model = ProductosModel
 
     def crearProducto(self, data):
         try:
-            producto = ProductosModel(data['nombre'], data['precio']),data['imagen']
+            producto = self.model(data['nombre'], data['precio'], data['imagen'])
             conexion.session.add(producto)
             conexion.session.commit()
             return {
@@ -24,9 +27,9 @@ class ProductosController:
             productos = ProductosModel.query.all()
             response = []
             for producto in productos:
-                response.append({producto.convertirJson()})
+                response.append(producto.convertirJson())
             return {
-                'message': productos
+                'data': response
             }, 200
         except Exception as e:
             conexion.session.rollback()
@@ -37,10 +40,10 @@ class ProductosController:
 
     def eliminarProductos(self, producto_id):
         try:
-            producto = ProductosModel.query.filer_by(id=producto_id).first()
+            producto = ProductosModel.query.filter_by(id=producto_id).first()
             producto.estado=False
             conexion.session.commit()
-            print(producto)
+           
             return {
                 'message': 'Producto Eliminado Correctamente'
             }, 200
@@ -56,9 +59,8 @@ class ProductosController:
             producto = ProductosModel.query.filter_by(id=producto_id).first()
             producto.nombre = data['nombre']
             producto.precio = data['precio']
+            producto.imagen = data['imagen']
             conexion.session.commit()
-            print(producto)
-            print(data)
 
             return {
                 'data': producto.convertirJson()
@@ -75,10 +77,10 @@ class ProductosController:
             response = []
             for producto in productos:
                 response.append(producto.convertirJson())
+        
             return {
                 'data': response
             }, 200
-
 
         except Exception as e:
             return {

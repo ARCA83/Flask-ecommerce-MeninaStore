@@ -16,9 +16,14 @@ class ProductosModel(conexion.Model):
         self.imagen = imagen
         self.estado = estado
 
+    
+
     def convertirJson(self):
         return{
             'id':self.id,
             'nombre':self.nombre,
-            'precio':self.precio
+            'precio':self.precio,
+            'imagen':self.imagen,
+            'estado':self.estado,
+            #'categorias': categorias_productos
         }

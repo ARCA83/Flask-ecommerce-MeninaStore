@@ -17,16 +17,16 @@ def productosListar():
 
 @app.route("/productos/eliminar/<int:producto_id>", methods=['DELETE'])
 def productosEliminar(producto_id):
-    controller = ProductosController(producto_id)
+    controller = ProductosController()
     return controller.eliminarProductos(producto_id)
 
 
 @app.route("/productos/actualizar/<int:producto_id>", methods=['PUT'])
 def productosActualizar(producto_id):
-    controller = ProductosController(producto_id)
+    controller = ProductosController()
     return controller.actualizarProducto(producto_id, request.json)
 
-@app.route("/productos/buscar<float:precio>", methods=['GET'])
+@app.route("/productos/buscar/<float:precio>", methods=['GET'])
 def productosBuscar(precio):
-    controller = ProductosController(precio)
+    controller = ProductosController()
     return controller.buscarProductos(precio)
