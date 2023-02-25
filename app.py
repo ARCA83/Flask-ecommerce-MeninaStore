@@ -14,7 +14,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = environ.get('DATABASE_URL')
 
 conexion.init_app(app)
 
-migrate = Migrate(app, conexion)
+Migrate(app, conexion)
 
 @app.before_first_request
 def inicializadora():

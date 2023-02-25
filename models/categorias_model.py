@@ -2,19 +2,20 @@ from configuracion import conexion
 from sqlalchemy import Column,Integer, String, Boolean
 
 class CategoriasModel(conexion.Model):
-    __talename__='categorias'
+    __tablename__='categorias'
 
-    id= Column(Integer,primary_key=True,autoincrement=True,unique=True)
+    id= Column(Integer,primary_key=True,autoincrement=True)
     nombre = Column(String(90),nullable=False)
     estado = Column(Boolean, default=True)
 
-    def __init__(self, nombre, estado=None) -> None:
+    def __init__(self, nombre) -> None:
         self.nombre = nombre
-        self.estado = estado
+        #self.estado = estado
 
-        
+
     def convertirJson(self):
         return{
             'id':self.id,
-            'nombre':self.nombre
+            'nombre':self.nombre,
+            'estado':self.estado
         }

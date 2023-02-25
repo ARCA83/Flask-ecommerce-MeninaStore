@@ -4,12 +4,11 @@ from configuracion import conexion
 
 
 class ProductosController:
-    def __init__(self) -> None:
-        self.model = ProductosModel
+    
 
     def crearProducto(self, data):
         try:
-            producto = self.model(data['nombre'], data['precio'], data['imagen'])
+            producto = ProductosModel(data['nombre'], data['precio'], data['imagen'])
             conexion.session.add(producto)
             conexion.session.commit()
 
